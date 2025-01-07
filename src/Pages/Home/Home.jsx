@@ -8,10 +8,25 @@ import classes from '../../assets/class.png'
 import playGround from '../../assets/playground.png'
 import BackGround from '../../assets/bg.png'
 import LeftSideDiv from '../LeftSideDiv/LeftSideDiv';
+import { useLoaderData } from 'react-router-dom';
+import NewsCard from './NewsCard';
+import { useState } from 'react';
 
 export default function Home() {
+  const news = useLoaderData();
+  console.log(news);
+  
+ 
+  const [visibleNewsCount, setVisibleNewsCount] = useState(7);
+  const handleSeeMore = () => {
+    setVisibleNewsCount(prevCount => prevCount + 19); // Show 10 more items on each click
+  };
+
+
+
+
   return (
-    <div className='border border-green-800 w-full mx-auto'>
+    <div className=' w-full mx-auto'>
       <Header></Header>
       <BreakingNews></BreakingNews>
       <NavigationBar></NavigationBar>
@@ -19,7 +34,7 @@ export default function Home() {
 
 
         {/* Left side Div */}
-        <div className='col-span-1 border border-yellow-300 '>
+        <div className='col-span-1  '>
 
        <LeftSideDiv></LeftSideDiv>
 
@@ -27,13 +42,36 @@ export default function Home() {
         </div>
 
 
-        {/* Centre Div */}
-        <div className='col-span-2 border border-yellow-300 '><h1>Centre div</h1></div>
+         {/* Centre Div */}
+         <div className='col-span-2  '>
+          {news.slice(0, visibleNewsCount).map(Anews => (
+            <NewsCard key={Anews._id} news={Anews} />
+          ))}
+
+
+          {visibleNewsCount < news.length && (
+            <button
+              onClick={handleSeeMore}
+              className="m-4  mx-auto w-full px-4 py-2  bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none"
+            >
+              See More
+            </button>
+          )}
+
+
+
+          <div className='mx-auto w-full'>
+
+          
+
+
+          </div>
+        </div>
 
 
 
         {/* Right side Div */}
-        <div className='col-span-1 border border-yellow-300 '>
+        <div className='col-span-1  '>
 
           {/* Login with button section */}
           <div className="space-y-4 mx-auto w-full max-w-sm">
